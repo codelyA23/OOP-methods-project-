@@ -159,13 +159,31 @@ header nav a.active {
 }
 
 /* Register button in nav */
-header nav .btn-primary {
+/* header nav .btn-primary {
     background-color: var(--accent-color);
     color: var(--text-light);
     font-weight: 600;
     padding: 0.5rem;
     margin-left: 0.5rem;
     transition: all 0.2s ease;
+} */
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex
+;
+    align-items: center;
+    gap: 0.5rem;
+    min-width: 140px;
+    justify-content: center;
 }
 
 header nav .btn-primary:hover {
@@ -178,7 +196,9 @@ header nav .btn-primary:hover {
 header nav .btn-secondary {
     border: 2px solid var(--accent-color);
     margin-left: 0.5rem;
-    transition: all 0.2s ease;
+    transition: all 0.2s ease;   
+    background: #6c757d;
+    color: white;
 }
 
 header nav .btn-secondary:hover {

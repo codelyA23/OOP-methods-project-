@@ -28,3 +28,22 @@ def delete_showtime(db: Session, play_id: int, date_and_time: datetime):
         db.delete(db_showtime)
         db.commit()
     return db_showtime
+
+def update_showtime(
+    db: Session, 
+    play_id: int, 
+    original_date_time: datetime, 
+    showtime_update: dict
+):
+    # Get the existing showtime
+    db_showtime = get_showtime(db, play_id=play_id, date_and_time=original_date_time)
+    if not db_showtime:
+        return None
+        
+    # Update the fields
+    for field, value in showtime_update.items():
+        setattr(db_showtime, field, value)
+    
+    db.commit()
+    db.refresh(db_showtime)
+    return db_showtime

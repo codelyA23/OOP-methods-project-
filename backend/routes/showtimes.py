@@ -5,6 +5,7 @@ from datetime import datetime
 
 from .. import models
 from ..schemas import showtimes as showtime_schemas
+from ..schemas.showtimes import ShowTimeUpdate
 from ..crud import showtimes as showtime_crud
 from ..database import get_db
 from ..auth.dependencies import get_current_admin_user
@@ -35,6 +36,42 @@ def read_all_showtimes(skip: int = 0, limit: int = 100, db: Session = Depends(ge
 def read_showtimes_for_play(play_id: int, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     showtimes = showtime_crud.get_showtimes_for_play(db, play_id=play_id, skip=skip, limit=limit)
     return showtimes
+
+@router.put("/update", response_model=showtime_schemas.ShowTimeResponse, dependencies=[Depends(get_current_admin_user)])
+def update_showtime(
+    play_id: int,
+    original_date_time: datetime,
+    showtime_update: showtime_schemas.ShowTimeUpdate,
+    db: Session = Depends(get_db)
+):
+    # Check if the play exists
+    db_play = db.query(models.Play).filter(models.Play.id == play_id).first()
+    if not db_play:
+        raise HTTPException(status_code=404, detail=f"Play with id {play_id} not found")
+    
+    # Check if the original showtime exists
+    db_showtime = showtime_crud.get_showtime(db, play_id=play_id, date_and_time=original_date_time)
+    if not db_showtime:
+        raise HTTPException(status_code=404, detail="Showtime not found")
+    
+    # If date/time is being updated, check for conflicts
+    if showtime_update.date_and_time and showtime_update.date_and_time != original_date_time:
+        existing = showtime_crud.get_showtime(db, play_id=play_id, date_and_time=showtime_update.date_and_time)
+        if existing:
+            raise HTTPException(status_code=400, detail="A showtime already exists for this play at the new date and time")
+    
+    # Update the showtime
+    updated_showtime = showtime_crud.update_showtime(
+        db=db,
+        play_id=play_id,
+        original_date_time=original_date_time,
+        showtime_update=showtime_update.model_dump(exclude_unset=True)
+    )
+    
+    if not updated_showtime:
+        raise HTTPException(status_code=500, detail="Failed to update showtime")
+        
+    return updated_showtime
 
 @router.delete("/", status_code=status.HTTP_204_NO_CONTENT, dependencies=[Depends(get_current_admin_user)])
 def delete_showtime(showtime_to_delete: showtime_schemas.ShowTimeDelete, db: Session = Depends(get_db)):

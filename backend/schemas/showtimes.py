@@ -18,6 +18,10 @@ class ShowTimeResponse(ShowTimeBase):
     class Config:
         from_attributes = True
 
+class ShowTimeUpdate(BaseModel):
+    date_and_time: datetime | None = None
+    venue: str | None = None
+
 class ShowTimeDelete(BaseModel):
     play_id: int
     date_and_time: datetime

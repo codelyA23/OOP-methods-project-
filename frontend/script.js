@@ -1175,20 +1175,36 @@ async function fetchActors() {
     const response = await makeRequest("GET", `${apiUrl}/actors/`);
     if (!response) return;
 
+    const isAdmin = localStorage.getItem('userRole') === 'admin';
     tbody.innerHTML = "";
+    
     response.forEach(actor => {
       const row = document.createElement("tr");
-      row.innerHTML = `
+      let rowHTML = `
         <td>${actor.name}</td>
         <td>${actor.gender}</td>
         <td>${actor.date_of_birth}</td>
-        <td class="admin-only">
-          <button data-action="edit" data-actor-id="${actor.id}" class="btn edit-btn">Edit</button>
-          <button data-action="delete" data-actor-id="${actor.id}" class="btn delete-btn">Delete</button>
-        </td>
       `;
+      
+      if (isAdmin) {
+        rowHTML += `
+          <td class="admin-actions">
+            <button data-action="edit" data-actor-id="${actor.id}" class="btn edit-btn">
+              <i class="fas fa-edit"></i> Edit
+            </button>
+            <button data-action="delete" data-actor-id="${actor.id}" class="btn delete-btn">
+              <i class="fas fa-trash"></i> Delete
+            </button>
+          </td>
+        `;
+      }
+      
+      row.innerHTML = rowHTML;
       tbody.appendChild(row);
     });
+    
+    // Update admin UI visibility
+    updateAdminUI();
   } catch (error) {
     console.error("Error fetching actors:", error);
     showError("Failed to load actors");
@@ -1331,17 +1347,15 @@ async function fetchShowtimes(playId) {
     try {
         let showtimes = [];
         
-        if (!playId) {
-            // Fetch all showtimes for all plays
-            const res = await fetch(`${apiUrl}/showtimes/`);
-            if (!res.ok) throw new Error('Failed to fetch showtimes');
-            showtimes = await res.json();
-        } else {
-            // Fetch showtimes for specific play
-        const res = await fetch(`${apiUrl}/showtimes/${playId}`);
-            if (!res.ok) throw new Error('Failed to fetch showtimes');
-            showtimes = await res.json();
-        }
+        // Always fetch all showtimes and filter by playId if provided
+        const res = await fetch(`${apiUrl}/showtimes/`);
+        if (!res.ok) throw new Error('Failed to fetch showtimes');
+        let allShowtimes = await res.json();
+        
+        // Filter by playId if provided
+        showtimes = playId 
+            ? allShowtimes.filter(st => st.play_id == playId)
+            : allShowtimes;
 
         if (showtimes.length === 0) {
             container.innerHTML = '<div class="empty-state"><i class="fas fa-calendar-alt"></i><p>No showtimes available.</p></div>';
@@ -1350,6 +1364,13 @@ async function fetchShowtimes(playId) {
 
         let showtimesHTML = '';
         showtimes.forEach(showtime => {
+    // Format date and time for display
+    const dateObj = new Date(showtime.date_and_time);
+    const dateStr = dateObj.toLocaleDateString();
+    const timeStr = dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+    // Admin action buttons will be included in the template below
+
             const showtimeDate = new Date(showtime.date_and_time);
             const formattedDate = showtimeDate.toLocaleDateString('en-US', { 
                 weekday: 'long', 
@@ -1368,7 +1389,8 @@ async function fetchShowtimes(playId) {
             showtimesHTML += `
                 <div class="showtime-card">
                     <div class="showtime-header">
-                        <h3 class="showtime-title">${showtime.play?.title || 'Unknown Play'} - ${formattedDate}</h3>
+                        <h3 class="showtime-title">${showtime.play?.title || 'Unknown Play'}</h3>
+                        <div class="showtime-date">${formattedDate}</div>
                     </div>
                     <div class="showtime-body">
                         <div class="showtime-details">
@@ -1385,18 +1407,22 @@ async function fetchShowtimes(playId) {
                                 <span class="showtime-seats">${showtime.available_seats || 'Unlimited'} seats available</span>
                             </div>
                         </div>
-                        <div class="showtime-seats">
-                            <div class="seats-available">
-                                <span>Available Seats: ${showtime.available_seats || 'Unlimited'}</span>
-                            </div>
-                            <div class="showtime-actions">
-                                <button class="btn btn-primary" onclick="bookTickets('${showtimePlayId}', '${showtime.date_and_time}')">Book Tickets</button>
-                                <div class="admin-only">
-                                    <button class="btn btn-danger" onclick="handleDeleteShowtime('${showtimePlayId}', '${showtime.date_and_time}')">
-                                        <i class="fas fa-trash"></i> Delete
-                                    </button>
-                                </div>
-                            </div>
+                        <div class="showtime-actions">
+                            <button class="btn btn-primary" onclick="bookTickets('${showtimePlayId}', '${showtime.date_and_time}')">
+                                <i class="fas fa-ticket-alt"></i> Book Tickets
+                            </button>
+                            ${localStorage.getItem('userRole') === 'admin' ? `
+                            <div class="admin-actions">
+                                <button class="btn btn-secondary btn-edit-showtime" 
+                                        data-play-id="${showtimePlayId}" 
+                                        data-datetime="${showtime.date_and_time}">
+                                    <i class="fas fa-edit"></i> Edit
+                                </button>
+                                <button class="btn btn-danger" 
+                                        onclick="if(confirm('Are you sure you want to delete this showtime?')) { handleDeleteShowtime('${showtimePlayId}', '${showtime.date_and_time}') }">
+                                    <i class="fas fa-trash"></i> Delete
+                                </button>
+                            </div>` : ''}
                         </div>
                     </div>
                 </div>
@@ -1404,6 +1430,135 @@ async function fetchShowtimes(playId) {
         });
         container.innerHTML = showtimesHTML;
         updateAdminUI();
+
+        // Add event delegation for edit buttons
+        container.querySelectorAll('.btn-edit-showtime').forEach(btn => {
+          btn.addEventListener('click', async (e) => {
+            const playId = btn.getAttribute('data-play-id');
+            const dateTime = btn.getAttribute('data-datetime');
+            
+            if (!playId || !dateTime) {
+              console.error('Missing showtime identifiers on button');
+              return;
+            }
+            
+            console.log('Editing showtime - Play ID:', playId, 'Date/Time:', dateTime);
+            
+            try {
+              // Fetch all showtimes to find the one we want to edit
+              const allShowtimes = await makeRequest('GET', `${apiUrl}/showtimes/`);
+              if (!allShowtimes) {
+                throw new Error('Failed to fetch showtimes');
+              }
+              
+              // Find the specific showtime by play_id and date_time
+              const showtime = allShowtimes.find(st => 
+                st.play_id == playId && 
+                new Date(st.date_and_time).getTime() === new Date(dateTime).getTime()
+              );
+              
+              if (!showtime) {
+                throw new Error('Showtime not found');
+              }
+              
+              console.log('Fetched showtime:', showtime);
+              
+              // Populate modal fields with date and time only
+              const dt = new Date(showtime.date_and_time);
+              document.getElementById('edit-showtime-date').value = dt.toISOString().split('T')[0];
+              document.getElementById('edit-showtime-time').value = dt.toTimeString().slice(0,5);
+              
+              // Store showtime identifiers in form data attributes
+              const form = document.getElementById('edit-showtime-form');
+              form.setAttribute('data-play-id', playId);
+              form.setAttribute('data-original-datetime', dateTime);
+              
+              // Show the modal with proper styling and z-index
+              const modal = document.getElementById('edit-showtime-modal');
+              modal.style.display = 'block';
+              modal.style.zIndex = '2000'; // Higher than other elements
+              modal.classList.add('show');
+              document.body.style.overflow = 'hidden'; // Prevent scrolling when modal is open
+            } catch (error) {
+              console.error('Error loading showtime details:', error);
+              showError('Failed to load showtime details. Please try again.');
+            }
+          });
+        });
+
+        // Modal close logic
+        const closeEditModal = () => {
+          const modal = document.getElementById('edit-showtime-modal');
+          modal.style.display = 'none';
+          modal.classList.remove('show');
+          document.body.style.overflow = 'auto'; // Re-enable scrolling
+        };
+        
+        // Close modal when clicking the close button
+        document.getElementById('close-edit-showtime-modal').onclick = closeEditModal;
+        
+        // Close modal when clicking outside the modal content
+        window.onclick = (event) => {
+          const modal = document.getElementById('edit-showtime-modal');
+          if (event.target === modal) {
+            closeEditModal();
+          }
+        };
+        
+        // Handle form submission for updating showtime
+        const editShowtimeForm = document.getElementById('edit-showtime-form');
+        if (editShowtimeForm) {
+          editShowtimeForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const playId = editShowtimeForm.getAttribute('data-play-id');
+            const originalDateTime = editShowtimeForm.getAttribute('data-original-datetime');
+            
+            if (!playId || !originalDateTime) {
+              showError('Invalid showtime data');
+              return;
+            }
+            
+            const date = document.getElementById('edit-showtime-date').value;
+            const time = document.getElementById('edit-showtime-time').value;
+            
+            if (!date || !time) {
+              showError('Please fill in all fields');
+              return;
+            }
+            
+            // Combine date and time
+            const dateTime = new Date(`${date}T${time}`).toISOString();
+            
+            try {
+              // Prepare the update data
+              const updateData = {
+                date_and_time: dateTime
+              };
+              
+              // Make the update request
+              const response = await makeRequest('PUT', `${apiUrl}/showtimes/update?play_id=${encodeURIComponent(playId)}&original_date_time=${encodeURIComponent(originalDateTime)}`, updateData);
+              
+              if (response) {
+                showSuccess('Showtime updated successfully!');
+                closeEditModal();
+                // Refresh the showtimes list
+                fetchShowtimes(currentPlayId);
+              }
+            } catch (error) {
+              console.error('Error updating showtime:', error);
+              showError('Failed to update showtime. Please try again.');
+            }
+          });
+        }
+        
+        window.onclick = function(event) {
+          const modal = document.getElementById('edit-showtime-modal');
+          if (event.target === modal) {
+            modal.style.display = 'none';
+          }
+        };
+
     } catch (error) {
         console.error('Error fetching showtimes:', error);
         container.innerHTML = '<div class="empty-state"><i class="fas fa-calendar-alt"></i><p>An error occurred while loading showtimes.</p></div>';
@@ -1416,9 +1571,9 @@ async function handleAddShowtime(e) {
     const date = document.getElementById('showtime-date').value;
     const time = document.getElementById('showtime-time').value;
     const venue = document.getElementById('showtime-venue').value;
-    const availableSeats = document.getElementById('showtime-available').value;
+    // const availableSeats = document.getElementById('showtime-available').value;
 
-    if (!playId || !date || !time || !venue || !availableSeats) {
+    if (!playId || !date || !time || !venue) {
         showError('Please fill in all fields.');
         return;
     }
@@ -1430,7 +1585,7 @@ async function handleAddShowtime(e) {
         play_id: parseInt(playId),
         date_and_time: dateTime,
         venue: venue,
-        available_seats: parseInt(availableSeats)
+        // available_seats: parseInt(availableSeats)
     };
 
     const response = await makeRequest("POST", `${apiUrl}/showtimes/`, showtimeData);

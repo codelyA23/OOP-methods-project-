@@ -100,7 +100,7 @@
                 required
               />
             </div>
-            <div class="form-group">
+            <!-- <div class="form-group">
               <label for="showtime-available">Available Seats</label>
               <input
                 type="number"
@@ -109,7 +109,7 @@
                 min="1"
                 required
               />
-            </div>
+            </div> -->
             <button type="submit" class="btn-primary">Add Showtime</button>
           </form>
         </div>
@@ -164,6 +164,25 @@
                     </div>
                 </div>
             </div>
+        </div>
+
+        <!-- Edit Showtime Modal -->
+        <div id="edit-showtime-modal" class="modal" style="display:none;">
+          <div class="modal-content">
+            <span class="close-modal" id="close-edit-showtime-modal">&times;</span>
+            <h2>Edit Showtime</h2>
+            <form id="edit-showtime-form">
+              <div class="form-group">
+                <label for="edit-showtime-date">Date</label>
+                <input type="date" id="edit-showtime-date" class="form-control" required />
+              </div>
+              <div class="form-group">
+                <label for="edit-showtime-time">Time</label>
+                <input type="time" id="edit-showtime-time" class="form-control" required />
+              </div>
+              <button type="submit" class="btn-primary">Update Showtime</button>
+            </form>
+          </div>
         </div>
     </main>
     <script src="script.js"></script>

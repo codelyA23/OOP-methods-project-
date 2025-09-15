@@ -5,6 +5,12 @@
     padding: 0 1.5rem;
 }
 
+.actors-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+}
+
 .section-title, h2 {
     color: var(--primary-color);
     text-align: center;
@@ -33,6 +39,42 @@
     box-shadow: var(--box-shadow);
     overflow: hidden;
     margin-bottom: 2rem;
+}
+
+/* Admin actions in table */
+.admin-actions {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+}
+
+.admin-actions .btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.admin-actions .edit-btn {
+    background-color: #4a6bdf;
+    color: white;
+}
+
+.admin-actions .delete-btn {
+    background-color: #dc3545;
+    color: white;
+}
+
+.admin-actions .btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Hide admin columns for non-admin users */
+body:not(.admin) .admin-only,
+body:not(.admin) [class*="admin-"] {
+    display: none !important;
 }
 
 .entity-table th,
