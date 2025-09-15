@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>All Plays - Sierra Leone Concert Association</title>
+    <link rel="stylesheet" href="assets/styles/main.css" />
+    <link rel="stylesheet" href="assets/styles/plays.css" />
+  </head>
+  <body>
+    <header>
+      <div class="header-container">
+        <a href="index.html" class="logo-link">
+          <img
+            src="assets/logo.png"
+            alt="Salone Concerts Logo"
+            class="site-logo"
+          />
+        </a>
+        <nav>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="plays.html" class="active">Plays</a></li>
+            <li><a href="actors.html">Actors</a></li>
+            <li><a href="directors.html">Directors</a></li>
+            <li><a href="showtimes.html">Showtimes</a></li>
+            <li id="tickets-link" style="display: none">
+              <a href="tickets.html">My Tickets</a>
+            </li>
+            <li id="login-link" style="display: list-item">
+              <a href="login.html" class="btn-secondary">Login</a>
+            </li>
+            <li id="register-link" style="display: list-item">
+              <a href="register.html" class="btn-primary">Register</a>
+            </li>
+            <li id="logout-link" style="display: none">
+              <a href="#" onclick="logout()">Logout</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <section id="plays-list-section">
+        <h2>All Available Plays</h2>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Duration</th>
+                <th>Price</th>
+                <th>Genre</th>
+                <th>Synopsis</th>
+                <th class="admin-only">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="plays-table-body">
+              <!-- Plays will be loaded here by script.js -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+    <script src="script.js"></script>
+  </body>
+</html>

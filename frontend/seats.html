@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Seats Management - Sierra Leone Concert Association</title>
+    <link rel="stylesheet" href="assets/styles/main.css" />
+    <link rel="stylesheet" href="assets/styles/seats.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+  </head>
+  <body>
+    <header>
+      <div class="header-container">
+        <a href="index.html" class="logo-link">
+          <img
+            src="assets/logo.png"
+            alt="Salone Concerts Logo"
+            class="site-logo"
+          />
+        </a>
+        <nav>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="plays.html">Plays</a></li>
+            <li><a href="actors.html">Actors</a></li>
+            <li><a href="directors.html">Directors</a></li>
+            <li><a href="showtimes.html">Showtimes</a></li>
+            <li><a href="seats.html" class="active">Seats</a></li>
+            <li id="tickets-link" style="display: none">
+              <a href="tickets.html">My Tickets</a>
+            </li>
+            <li id="login-link" style="display: list-item">
+              <a href="login.html">Login</a>
+            </li>
+            <li id="register-link" style="display: list-item">
+              <a href="register.html">Register</a>
+            </li>
+            <li id="logout-link" style="display: none">
+              <a href="#" onclick="logout()">Logout</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <div class="seats-container">
+        <h1 class="page-title">Seats Management</h1>
+
+        <section class="admin-section admin-only">
+          <h2>Quick Seat Creation</h2>
+
+          <!-- Theater Layout Templates -->
+          <div class="template-section">
+            <h3>Predefined Theater Layouts</h3>
+            <div class="template-buttons">
+              <button
+                class="template-btn"
+                onclick="generateTheaterLayout('small')"
+              >
+                <i class="fas fa-theater-masks"></i>
+                Small Theater (5 rows × 8 seats)
+              </button>
+              <button
+                class="template-btn"
+                onclick="generateTheaterLayout('medium')"
+              >
+                <i class="fas fa-theater-masks"></i>
+                Medium Theater (8 rows × 12 seats)
+              </button>
+              <button
+                class="template-btn"
+                onclick="generateTheaterLayout('large')"
+              >
+                <i class="fas fa-theater-masks"></i>
+                Large Theater (12 rows × 15 seats)
+              </button>
+            </div>
+          </div>
+
+          <!-- Bulk Seat Creation -->
+          <div class="bulk-section">
+            <h3>Bulk Seat Creation</h3>
+            <form id="bulk-seat-form" class="admin-form">
+              <div class="form-group">
+                <label for="start-row">Start Row:</label>
+                <input
+                  type="number"
+                  id="start-row"
+                  name="start_row"
+                  required
+                  min="1"
+                  value="1"
+                />
+              </div>
+              <div class="form-group">
+                <label for="end-row">End Row:</label>
+                <input
+                  type="number"
+                  id="end-row"
+                  name="end_row"
+                  required
+                  min="1"
+                  value="5"
+                />
+              </div>
+              <div class="form-group">
+                <label for="seats-per-row">Seats per Row:</label>
+                <input
+                  type="number"
+                  id="seats-per-row"
+                  name="seats_per_row"
+                  required
+                  min="1"
+                  value="8"
+                />
+              </div>
+              <button type="submit" class="btn-primary">
+                <i class="fas fa-plus"></i> Create All Seats
+              </button>
+            </form>
+          </div>
+
+          <!-- Single Seat Creation -->
+          <div class="single-section">
+            <h3>Add Single Seat</h3>
+            <form id="add-seat-form" class="admin-form">
+              <div class="form-group">
+                <label for="row-no">Row Number:</label>
+                <input
+                  type="number"
+                  id="row-no"
+                  name="row_no"
+                  required
+                  min="1"
+                />
+              </div>
+              <div class="form-group">
+                <label for="seat-no">Seat Number:</label>
+                <input
+                  type="number"
+                  id="seat-no"
+                  name="seat_no"
+                  required
+                  min="1"
+                />
+              </div>
+              <button type="submit" class="btn-primary">
+                <i class="fas fa-plus"></i> Add Seat
+              </button>
+            </form>
+          </div>
+        </section>
+
+        <section class="seats-list-section">
+          <div class="section-header">
+            <h2>All Seats</h2>
+            <button
+              class="btn-danger admin-only"
+              onclick="deleteAllSeats()"
+              style="margin-left: auto"
+            >
+              <i class="fas fa-trash-alt"></i> Delete All Seats
+            </button>
+          </div>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Row</th>
+                  <th>Seat</th>
+                  <th class="admin-only">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="seats-table-body">
+                <!-- Seats will be loaded here by script.js -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </main>
+    <script src="script.js"></script>
+  </body>
+</html>

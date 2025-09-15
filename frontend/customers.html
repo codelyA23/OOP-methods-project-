@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customers - Sierra Leone Concert Association</title>
+    <link rel="stylesheet" href="assets/styles/main.css">
+    <link rel="stylesheet" href="assets/styles/customers.css">
+</head>
+<body>
+    <header>
+    <img src="assets/logo.png" alt="Salone Concerts Logo" class="site-logo">
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="plays.html">Plays</a></li>
+            <li><a href="actors.html">Actors</a></li>
+            <li><a href="directors.html">Directors</a></li>
+            <li><a href="showtimes.html">Showtimes</a></li>
+            <li id="tickets-link" style="display: none;"><a href="tickets.html">My Tickets</a></li>
+            <li id="login-link" style="display: list-item;"><a href="login.html">Login</a></li>
+            <li id="register-link" style="display: list-item;"><a href="register.html">Register</a></li>
+            <li id="logout-link" style="display: none;"><a href="#" onclick="logout()">Logout</a></li>
+        </ul>
+    </nav>
+</header>
+    <main>
+        <h1>Customers</h1>
+        <table id="customers-table" class="entity-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Role</th>
+                    <th class="admin-only">Actions</th>
+                </tr>
+            </thead>
+            <tbody id="customers-table-body">
+                <!-- Customers will be dynamically loaded here -->
+            </tbody>
+        </table>
+        
+        <div id="admin-customer-controls" class="admin-only">
+            <h2>Add Customer</h2>
+            <form id="add-customer-form" class="admin-form">
+                <div class="form-group">
+                    <label for="customer-name">Name</label>
+                    <input type="text" id="customer-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="customer-email">Email</label>
+                    <input type="email" id="customer-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="customer-phone">Phone</label>
+                    <input type="tel" id="customer-phone">
+                </div>
+                <div class="form-group">
+                    <label for="customer-password">Password</label>
+                    <input type="password" id="customer-password" required>
+                </div>
+                <button type="submit" class="btn">Add Customer</button>
+            </form>
+        </div>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>

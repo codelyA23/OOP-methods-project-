@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Tickets - Sierra Leone Concert Association</title>
+    <link rel="stylesheet" href="assets/styles/main.css">
+    <link rel="stylesheet" href="assets/styles/tickets.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+    <div class="header-container">
+        <a href="index.html" class="logo-link">
+            <img src="assets/logo.png" alt="Salone Concerts Logo" class="site-logo">
+        </a>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="plays.html">Plays</a></li>
+                <li><a href="actors.html">Actors</a></li>
+                <li><a href="directors.html">Directors</a></li>
+                <li><a href="showtimes.html">Showtimes</a></li>
+                <li id="tickets-link" style="display: none;"><a href="tickets.html">My Tickets</a></li>
+                <li id="login-link" style="display: list-item;"><a href="login.html">Login</a></li>
+                <li id="register-link" style="display: list-item;"><a href="register.html">Register</a></li>
+                <li id="logout-link" style="display: none;"><a href="#" onclick="logout()">Logout</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+    <main class="main-content">
+        <div class="tickets-container">
+            <h1 class="page-title">My Tickets</h1>
+            
+            <div class="tickets-filters">
+                <div class="filter-group">
+                    <label for="status-filter">Filter by Status:</label>
+                    <select id="status-filter" class="form-control">
+                        <option value="all">All Tickets</option>
+                        <option value="upcoming">Upcoming</option>
+                        <option value="past">Past Events</option>
+                        <option value="cancelled">Cancelled</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="tickets-list" class="tickets-grid">
+                <!-- Tickets will be loaded here by script.js -->
+                <div class="empty-state">
+                    <i class="fas fa-ticket-alt"></i>
+                    <h3>No Tickets Yet</h3>
+                    <p>You haven't purchased any tickets yet. Check out our <a href="showtimes.html">upcoming shows</a>!</p>
+                </div>
+            </div>
+
+            <!-- Ticket Details Modal -->
+            <div id="ticket-modal" class="modal">
+                <div class="modal-content">
+                    <span class="close-modal">&times;</span>
+                    <div class="ticket-details">
+                        <div class="ticket-header">
+                            <h2 id="ticket-play">Play Title</h2>
+                            <span id="ticket-status" class="status-badge">Confirmed</span>
+                        </div>
+                        
+                        <div class="ticket-body">
+                            <div class="ticket-info">
+                                <div class="info-row">
+                                    <i class="far fa-calendar-alt"></i>
+                                    <div>
+                                        <span class="info-label">Date & Time</span>
+                                        <span id="ticket-datetime" class="info-value">Saturday, June 15, 2024 at 7:30 PM</span>
+                                    </div>
+                                </div>
+                                <div class="info-row">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <div>
+                                        <span class="info-label">Venue</span>
+                                        <span id="ticket-venue" class="info-value">National Theater, Freetown</span>
+                                    </div>
+                                </div>
+                                <div class="info-row">
+                                    <i class="fas fa-chair"></i>
+                                    <div>
+                                        <span class="info-label">Seat</span>
+                                        <span id="ticket-seat" class="info-value">A12</span>
+                                    </div>
+                                </div>
+                                <div class="info-row">
+                                    <i class="fas fa-ticket-alt"></i>
+                                    <div>
+                                        <span class="info-label">Ticket Number</span>
+                                        <span id="ticket-number" class="info-value">TKT-2024-001234</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="ticket-qr">
+                                <div id="ticket-qr-code">
+                                    <!-- QR code will be generated here -->
+                                    <div class="qr-placeholder">
+                                        <i class="fas fa-qrcode"></i>
+                                        <span>Ticket QR Code</span>
+                                    </div>
+                                </div>
+                                <p class="qr-note">Present this QR code at the entrance</p>
+                            </div>
+                        </div>
+                        
+                        <div class="ticket-actions">
+                            <button id="download-ticket" class="btn-primary">
+                                <i class="fas fa-download"></i> Download Ticket
+                            </button>
+                            <button id="cancel-ticket" class="btn-danger">
+                                <i class="fas fa-times"></i> Cancel Ticket
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>

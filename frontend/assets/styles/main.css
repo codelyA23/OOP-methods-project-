@@ -1,0 +1,7 @@
+/* ===== Main Styles Import File ===== */
+@import url('_shared.css');
+
+/* Page-specific styles will be imported by their respective HTML files */
+/* Example: */
+/* @import url('index.css'); */
+/* @import url('customers.css'); */

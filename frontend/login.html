@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - Sierra Leone Concert Association</title>
+    <link rel="stylesheet" href="assets/styles/main.css" />
+    <link rel="stylesheet" href="assets/styles/auth.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+  </head>
+  <body>
+    <header>
+      <div class="header-container">
+        <a href="index.html" class="logo-link">
+          <img
+            src="assets/logo.png"
+            alt="Salone Concerts Logo"
+            class="site-logo"
+          />
+        </a>
+        <nav>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="plays.html">Plays</a></li>
+            <li><a href="actors.html">Actors</a></li>
+            <li><a href="directors.html">Directors</a></li>
+            <li><a href="showtimes.html">Showtimes</a></li>
+            <li id="tickets-link" style="display: none">
+              <a href="tickets.html">My Tickets</a>
+            </li>
+            <li id="login-link" style="display: list-item">
+              <a href="login.html" class="btn-secondary">Login</a>
+            </li>
+            <li id="register-link" style="display: list-item">
+              <a href="register.html" class="btn-primary">Register</a>
+            </li>
+            <li id="logout-link" style="display: none">
+              <a href="#" onclick="logout()" class="btn-secondary">Logout</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main class="auth-container">
+      <div class="auth-card">
+        <div class="auth-header">
+          <h1>Welcome Back</h1>
+          <p>Sign in to access your account</p>
+        </div>
+
+        <form id="login-form" class="auth-form">
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <div class="input-with-icon">
+              <i class="fas fa-envelope"></i>
+              <input
+                type="email"
+                id="email"
+                placeholder="Enter your email"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="form-header">
+              <label for="password">Password</label>
+              <a href="forgot-password.html" class="forgot-password"
+                >Forgot Password?</a
+              >
+            </div>
+            <div class="input-with-icon">
+              <i class="fas fa-lock"></i>
+              <input
+                type="password"
+                id="password"
+                placeholder="Enter your password"
+                required
+              />
+              <button
+                type="button"
+                class="toggle-password"
+                aria-label="Toggle password visibility"
+              >
+                <i class="far fa-eye-slash"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="form-options">
+            <label class="checkbox-container">
+              <input type="checkbox" id="remember-me" />
+              <span class="checkmark"></span>
+              Remember me
+            </label>
+          </div>
+
+          <button type="submit" class="btn-primary btn-block">
+            <span class="btn-text">Sign In</span>
+            <i class="fas fa-arrow-right"></i>
+          </button>
+
+          <div class="auth-divider">
+            <span>or continue with</span>
+          </div>
+
+          <div class="social-login">
+            <button type="button" class="btn-social btn-google">
+              <img src="/frontend/assets/google-logo.png" alt="Google" />
+              Google
+            </button>
+            <button type="button" class="btn-social btn-facebook">
+              <i class="fab fa-facebook-f"></i>
+            </button>
+          </div>
+
+          <p class="auth-footer">
+            Don't have an account? <a href="register.html">Sign up</a>
+          </p>
+        </form>
+      </div>
+    </main>
+    <script src="assets/js/auth.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>

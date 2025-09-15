@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register - Sierra Leone Concert Association</title>
+    <link rel="stylesheet" href="assets/styles/main.css" />
+    <link rel="stylesheet" href="assets/styles/auth.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+  </head>
+  <body class="register-page">
+    <header>
+      <div class="header-container">
+        <a href="index.html" class="logo-link">
+          <img
+            src="assets/logo.png"
+            alt="Salone Concerts Logo"
+            class="site-logo"
+          />
+        </a>
+        <nav>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="plays.html">Plays</a></li>
+            <li><a href="actors.html">Actors</a></li>
+            <li><a href="directors.html">Directors</a></li>
+            <li><a href="showtimes.html">Showtimes</a></li>
+            <li id="tickets-link" style="display: none">
+              <a href="tickets.html">My Tickets</a>
+            </li>
+            <li id="login-link" style="display: list-item">
+              <a href="login.html" class="btn-secondary">Login</a>
+            </li>
+            <li id="register-link" style="display: list-item">
+              <a href="register.html" class="btn-primary">Register</a>
+            </li>
+            <li id="logout-link" style="display: none">
+              <a href="#" onclick="logout()">Logout</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main class="auth-container">
+      <div class="auth-card">
+        <div class="auth-header">
+          <h1>Create an Account</h1>
+          <p>Join us to book tickets and more</p>
+        </div>
+
+        <form id="register-form" class="auth-form">
+          <div class="form-group">
+            <label for="name">Full Name</label>
+            <div class="input-with-icon">
+              <i class="fas fa-user"></i>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                placeholder="Enter your full name"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <div class="input-with-icon">
+              <i class="fas fa-envelope"></i>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="Enter your email"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <div class="input-with-icon">
+              <i class="fas fa-lock"></i>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Create a password"
+                required
+              />
+              <button
+                type="button"
+                class="toggle-password"
+                aria-label="Toggle password visibility"
+              >
+                <i class="far fa-eye-slash"></i>
+              </button>
+            </div>
+            <div class="password-strength">
+              <div class="strength-meter">
+                <span class="strength-segment"></span>
+                <span class="strength-segment"></span>
+                <span class="strength-segment"></span>
+              </div>
+              <span class="strength-text"
+                >Password strength: <span id="strength-text">Weak</span></span
+              >
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="confirm-password">Confirm Password</label>
+            <div class="input-with-icon">
+              <i class="fas fa-lock"></i>
+              <input
+                type="password"
+                id="confirm-password"
+                name="confirm_password"
+                placeholder="Confirm your password"
+                required
+              />
+              <button
+                type="button"
+                class="toggle-password"
+                aria-label="Toggle password visibility"
+              >
+                <i class="far fa-eye-slash"></i>
+              </button>
+            </div>
+            <div
+              id="password-match"
+              class="error-message"
+              style="display: none"
+            >
+              <i class="fas fa-exclamation-circle"></i> Passwords do not match
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="telephone"
+              >Phone Number <span class="optional">(Optional)</span></label
+            >
+            <div class="input-with-icon">
+              <i class="fas fa-phone"></i>
+              <input
+                type="tel"
+                id="telephone"
+                name="telephone_no"
+                placeholder="Enter your phone number"
+              />
+            </div>
+          </div>
+
+          <div class="form-options">
+            <label class="checkbox-container">
+              <input type="checkbox" id="terms" name="terms" required />
+              <span class="checkmark"></span>
+              I agree to the
+              <a href="terms.html" target="_blank" class="terms-link"
+                >Terms of Service</a
+              >
+              and
+              <a href="privacy.html" target="_blank" class="terms-link"
+                >Privacy Policy</a
+              >
+            </label>
+          </div>
+
+          <button type="submit" class="btn-primary btn-block">
+            <span class="btn-text">Create Account</span>
+            <i class="fas fa-arrow-right"></i>
+          </button>
+
+          <div class="auth-divider">
+            <span>or sign up with</span>
+          </div>
+
+          <div class="social-login">
+            <button type="button" class="btn-social btn-google">
+              <img src="/frontend/assets/google-logo.png" alt="Google" />
+              Google
+            </button>
+            <button type="button" class="btn-social btn-facebook">
+              <i class="fab fa-facebook-f"></i>
+            </button>
+          </div>
+
+          <p class="auth-footer">
+            Already have an account? <a href="login.html">Sign in</a>
+          </p>
+        </form>
+      </div>
+    </main>
+
+    <script src="assets/js/auth.js"></script>
+    <script>
+      // Password strength indicator
+      const passwordInput = document.getElementById("password");
+      const confirmPasswordInput = document.getElementById("confirm-password");
+      const passwordMatch = document.getElementById("password-match");
+      const strengthSegments = document.querySelectorAll(".strength-segment");
+      const strengthText = document.getElementById("strength-text");
+
+      function checkPasswordStrength(password) {
+        let strength = 0;
+
+        // Length check
+        if (password.length >= 8) strength += 1;
+
+        // Contains letters and numbers
+        if (password.match(/[a-z]+/) && password.match(/[0-9]+/)) strength += 1;
+
+        // Contains special characters
+        if (password.match(/[^a-zA-Z0-9]/)) strength += 1;
+
+        // Update UI
+        strengthSegments.forEach((segment, index) => {
+          segment.style.backgroundColor =
+            index < strength
+              ? ["#ef4444", "#f59e0b", "#10b981"][strength - 1]
+              : "#e2e8f0";
+        });
+
+        const strengthLabels = ["Weak", "Medium", "Strong"];
+        strengthText.textContent = strengthLabels[strength - 1] || "Weak";
+        strengthText.style.color =
+          ["#ef4444", "#f59e0b", "#10b981"][strength - 1] || "#ef4444";
+
+        return strength;
+      }
+
+      function validatePasswordMatch() {
+        if (
+          confirmPasswordInput.value &&
+          passwordInput.value !== confirmPasswordInput.value
+        ) {
+          passwordMatch.style.display = "flex";
+          return false;
+        } else {
+          passwordMatch.style.display = "none";
+          return true;
+        }
+      }
+
+      passwordInput.addEventListener("input", (e) => {
+        checkPasswordStrength(e.target.value);
+        if (confirmPasswordInput.value) {
+          validatePasswordMatch();
+        }
+      });
+
+      confirmPasswordInput.addEventListener("input", validatePasswordMatch);
+
+      // Form submission
+      document
+        .getElementById("register-form")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          if (!validatePasswordMatch()) {
+            return;
+          }
+
+          // Here you would typically send the form data to your server
+          const formData = {
+            name: document.getElementById("name").value,
+            email: document.getElementById("email").value,
+            password: document.getElementById("password").value,
+            telephone: document.getElementById("telephone").value,
+          };
+
+          console.log("Form submitted:", formData);
+        });
+    </script>
+    <script src="script.js"></script>
+  </body>
+</html>

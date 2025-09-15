@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actors - Sierra Leone Concert Association</title>
+    <link rel="stylesheet" href="assets/styles/main.css">
+    <link rel="stylesheet" href="assets/styles/actors.css">
+</head>
+<body>
+    <header>
+    <div class="header-container">
+        <a href="index.html" class="logo-link">
+            <img src="assets/logo.png" alt="Salone Concerts Logo" class="site-logo">
+        </a>
+        <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="plays.html">Plays</a></li>
+            <li><a href="actors.html" class="active">Actors</a></li>
+            <li><a href="directors.html">Directors</a></li>
+            <li><a href="showtimes.html">Showtimes</a></li>
+            <li id="tickets-link" style="display: none;"><a href="tickets.html">My Tickets</a></li>
+            <li id="login-link" style="display: list-item;"><a href="login.html" class="btn-secondary">Login</a></li>
+            <li id="register-link" style="display: list-item;"><a href="register.html" class="btn-primary">Register</a></li>
+            <li id="logout-link" style="display: none;"><a href="#" onclick="logout()">Logout</a></li>
+        </ul>
+    </nav>
+    </div>
+</header>
+    <main class="main-content">
+        <section id="actors-list-section">
+            <h2 class="section-title">Our Talented Actors</h2>
+        <table id="actors-table" class="entity-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Gender</th>
+                    <th>Year of Birth</th>
+                    <th class="admin-only">Actions</th>
+                </tr>
+            </thead>
+            <tbody id="actors-table-body">
+                <!-- Actors will be dynamically loaded here -->
+            </tbody>
+            </div>
+        </section>
+        
+        <section id="admin-actor-controls" class="admin-only admin-section">
+            <h2>Manage Actor</h2>
+            <form id="add-actor-form" class="admin-form">
+                <div class="form-group">
+                    <label for="actor-name">Name</label>
+                    <input type="text" id="actor-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="actor-gender">Gender</label>  
+                    <select name="actor-gender" id="actor-gender">
+                        <option value="M">Male</option>
+                        <option value="F">Female</option>
+                    </select>                  
+                </div>
+                <div class="form-group">
+                    <label for="actor-dob">Year of Birth</label>
+                    <input type="number" id="actor-dob" required>
+                </div>
+                <button type="submit" class="btn">Add Actor</button>
+            </form>
+        </section>
+    </main>
+
+
+    <script src="script.js"></script>
+</body>
+</html>
